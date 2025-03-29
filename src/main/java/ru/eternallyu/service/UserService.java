@@ -1,10 +1,10 @@
-package service;
+package ru.eternallyu.service;
 
 import lombok.RequiredArgsConstructor;
-import model.entity.User;
+import ru.eternallyu.model.entity.User;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import repository.UserRepository;
+import ru.eternallyu.repository.UserRepository;
 
 @Service
 @Component
@@ -13,7 +13,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User getUser(int id) {
-        return userRepository.findById(id).orElse(null);
+    public User getUser(String login) {
+        return userRepository.findByLogin(login).orElse(null);
     }
 }

@@ -1,10 +1,10 @@
-package service;
+package ru.eternallyu.service;
 
 import lombok.RequiredArgsConstructor;
-import model.entity.Session;
+import ru.eternallyu.model.entity.Session;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import repository.SessionRepository;
+import ru.eternallyu.repository.SessionRepository;
 
 import java.util.UUID;
 

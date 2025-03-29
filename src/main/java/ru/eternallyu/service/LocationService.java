@@ -1,11 +1,11 @@
-package service;
+package ru.eternallyu.service;
 
-import dto.LocationDto;
+import ru.eternallyu.dto.LocationDto;
 import lombok.RequiredArgsConstructor;
-import mapper.LocationMapper;
+import ru.eternallyu.mapper.LocationMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import repository.LocationRepository;
+import ru.eternallyu.repository.LocationRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

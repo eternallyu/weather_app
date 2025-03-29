@@ -1,4 +1,4 @@
-package configuration;
+package ru.eternallyu.configuration;
 
 
 import jakarta.servlet.Filter;
@@ -9,7 +9,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{HibernateConfig.class};
+        return new Class[]{JpaConfig.class};
     }
 
     @Override

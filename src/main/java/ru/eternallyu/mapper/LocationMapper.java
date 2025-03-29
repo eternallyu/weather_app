@@ -1,7 +1,7 @@
-package mapper;
+package ru.eternallyu.mapper;
 
-import dto.LocationDto;
-import model.entity.Location;
+import ru.eternallyu.dto.LocationDto;
+import ru.eternallyu.model.entity.Location;
 import org.springframework.stereotype.Component;
 
 @Component

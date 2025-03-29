@@ -1,4 +1,4 @@
-package dto;
+package ru.eternallyu.dto;
 
 import lombok.Builder;
 

@@ -1,4 +1,4 @@
-package model.entity;
+package ru.eternallyu.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

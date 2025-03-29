@@ -1,17 +1,16 @@
-package controllers;
+package ru.eternallyu.controllers;
 
-import dto.LocationDto;
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
-import model.entity.Session;
-import model.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import service.LocationService;
-import service.SessionService;
-import service.UserService;
+import ru.eternallyu.dto.LocationDto;
+import ru.eternallyu.model.entity.Session;
+import ru.eternallyu.model.entity.User;
+import ru.eternallyu.service.LocationService;
+import ru.eternallyu.service.SessionService;
+import ru.eternallyu.service.UserService;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,9 +26,14 @@ public class HomePageController {
     private final LocationService locationService;
 
     @GetMapping("/home")
-    public String homePage(@CookieValue(value = "session") Cookie sessionFromCookie, Model model) {
-        Session session = sessionService.getSession(UUID.fromString(String.valueOf(sessionFromCookie)));
-        User user = userService.getUser(session.getUser().getId());
+    public String homePage(@CookieValue(value = "session", defaultValue = "") String sessionFromCookie, Model model) {
+
+        if (sessionFromCookie.isEmpty()) {
+            return "index";
+        }
+
+        Session session = sessionService.getSession(UUID.fromString(sessionFromCookie));
+        User user = userService.getUser(session.getUser().getLogin());
         List<LocationDto> locationDtoList = locationService.getAllUserLocations(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("locationDtoList", locationDtoList);
