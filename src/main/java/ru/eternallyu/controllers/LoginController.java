@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
     @GetMapping("/login")
     public String login() {
-        return "login";
+        //login
+        return "sign-in";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        //logout
+        return "index";
     }
 }

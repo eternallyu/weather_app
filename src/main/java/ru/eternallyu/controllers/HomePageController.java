@@ -35,6 +35,7 @@ public class HomePageController {
         Session session = sessionService.getSession(UUID.fromString(sessionFromCookie));
         User user = userService.getUser(session.getUser().getLogin());
         List<LocationDto> locationDtoList = locationService.getAllUserLocations(user.getId());
+        System.out.println(locationDtoList.size());
         model.addAttribute("user", user);
         model.addAttribute("locationDtoList", locationDtoList);
         return "index";

@@ -14,9 +14,16 @@
             <img src="images/weather-app.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
             Weather Tracker
         </a>
+
         <div class="d-flex align-items-center">
-            <span class="navbar-text me-3">zhukovsd</span>
-            <button class="btn btn-outline-danger">Sign out</button>
+            <div th:if="${user == null}">
+                <button class="btn btn-outline-primary me-2" onclick="window.location.href='/login'">Log In</button>
+                <button class="btn btn-outline-secondary" onclick="window.location.href='/registration'">Sign Up</button>
+            </div>
+            <div th:if="${user != null}">
+                <span class="navbar-text me-3" th:text="${user.getLogin()}">User login</span>
+                <button class="btn btn-outline-danger" onclick="window.location.href='/logout'">Sign out</button>
+            </div>
         </div>
     </div>
 </nav>
