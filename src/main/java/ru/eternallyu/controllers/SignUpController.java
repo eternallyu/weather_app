@@ -19,7 +19,7 @@ public class SignUpController {
 
     @GetMapping("/registration")
     public String signUp(Model model) {
-        model.addAttribute("user", buildEmptyUserDto());
+        model.addAttribute("user", new UserDto());
         return "sign-up";
     }
 
@@ -36,12 +36,13 @@ public class SignUpController {
             return "sign-up";
         }
 
+        if (!userDto.isPasswordsMatch()) {
+            bindingResult.rejectValue("repeatPassword", "error.user", "Passwords do not match.");
+            return "sign-up";
+        }
+
         userService.createUser(userDto);
 
         return "redirect:/login";
-    }
-
-    private static UserDto buildEmptyUserDto() {
-        return UserDto.builder().build();
     }
 }
