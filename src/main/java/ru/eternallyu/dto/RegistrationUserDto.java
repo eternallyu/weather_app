@@ -1,6 +1,5 @@
 package ru.eternallyu.dto;
 
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -10,9 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-
-    private int id;
+public class RegistrationUserDto {
 
     @NotEmpty(message = "Login should not be empty.")
     @Size(min = 2, max = 20, message = "Login should be between 2 and 20 characters.")

@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.eternallyu.dto.UserDto;
+import ru.eternallyu.dto.RegistrationUserDto;
 import ru.eternallyu.service.UserService;
 
 @Controller
@@ -19,29 +19,29 @@ public class SignUpController {
 
     @GetMapping("/registration")
     public String signUp(Model model) {
-        model.addAttribute("user", new UserDto());
+        model.addAttribute("user", new RegistrationUserDto());
         return "sign-up";
     }
 
     @PostMapping("/registration")
-    public String signUp(@ModelAttribute("user") @Valid UserDto userDto,
+    public String signUp(@ModelAttribute("user") @Valid RegistrationUserDto registrationUserDto,
                          BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "sign-up";
         }
 
-        if (userService.existsByLogin(userDto.getLogin())) {
+        if (userService.existsByLogin(registrationUserDto.getLogin())) {
             bindingResult.rejectValue("login", "error.user", "User already exists.");
             return "sign-up";
         }
 
-        if (!userDto.isPasswordsMatch()) {
+        if (!registrationUserDto.isPasswordsMatch()) {
             bindingResult.rejectValue("repeatPassword", "error.user", "Passwords do not match.");
             return "sign-up";
         }
 
-        userService.createUser(userDto);
+        userService.createUser(registrationUserDto);
 
         return "redirect:/login";
     }

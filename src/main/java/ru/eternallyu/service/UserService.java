@@ -1,10 +1,8 @@
 package ru.eternallyu.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.eternallyu.dto.UserDto;
-import ru.eternallyu.exception.UserAlreadyExists;
+import ru.eternallyu.dto.RegistrationUserDto;
 import ru.eternallyu.mapper.UserMapper;
 import ru.eternallyu.model.entity.User;
 import ru.eternallyu.repository.UserRepository;
@@ -17,15 +15,19 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    public UserDto getUserDto(String login) {
+    public RegistrationUserDto getUserDto(String login) {
         return userRepository.findByLogin(login).map(userMapper::mapUserToUserDto).orElse(null);
     }
 
-    public void createUser(UserDto userDto) {
+    public void createUser(RegistrationUserDto registrationUserDto) {
 
-        User user = userMapper.mapUserDtoToUser(userDto);
+        User user = userMapper.mapUserDtoToUser(registrationUserDto);
 
         userRepository.save(user);
+    }
+
+    public User getUser(String login) {
+        return userRepository.findByLogin(login).orElse(null);
     }
 
     public boolean existsByLogin(String login) {

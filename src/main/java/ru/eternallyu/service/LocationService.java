@@ -16,9 +16,12 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
 
+    private final UserService userService;
+
     private final LocationMapper locationMapper;
 
-    public List<LocationDto> getAllUserLocations(int id) {
-        return locationRepository.findByUserId(id).stream().map(locationMapper::mapLocationToDto).collect(Collectors.toList());
+    public List<LocationDto> getAllUserLocations(String login) {
+        int userId = userService.getUser(login).getId();
+        return locationRepository.findByUserId(userId).stream().map(locationMapper::mapLocationToDto).collect(Collectors.toList());
     }
 }

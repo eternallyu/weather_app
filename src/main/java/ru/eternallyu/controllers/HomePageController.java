@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.eternallyu.dto.LocationDto;
-import ru.eternallyu.dto.UserDto;
+import ru.eternallyu.dto.RegistrationUserDto;
 import ru.eternallyu.model.entity.Session;
 import ru.eternallyu.service.LocationService;
 import ru.eternallyu.service.SessionService;
@@ -50,9 +50,9 @@ public class HomePageController {
     }
 
     private void addNonEmptyAttributes(Model model, Session session) {
-        UserDto userDto = userService.getUserDto(session.getUser().getLogin());
-        List<LocationDto> locationDtoList = locationService.getAllUserLocations(userDto.getId());
-        model.addAttribute("user", userDto);
+        RegistrationUserDto registrationUserDto = userService.getUserDto(session.getUser().getLogin());
+        List<LocationDto> locationDtoList = locationService.getAllUserLocations(registrationUserDto.getLogin());
+        model.addAttribute("user", registrationUserDto);
         model.addAttribute("locationDtoList", locationDtoList);
     }
 
