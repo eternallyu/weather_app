@@ -16,4 +16,12 @@ public class CookieUtil {
         cookie.setMaxAge(SESSION_DURATION_SECONDS);
         return cookie;
     }
+
+    public Cookie emptyCookie(String session) {
+        Cookie cookie = new Cookie("session", "");
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        return cookie;
+    }
 }

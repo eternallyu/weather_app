@@ -2,8 +2,8 @@ package ru.eternallyu.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.eternallyu.dto.LoginUserDto;
-import ru.eternallyu.exception.UserAlreadyLoggedInException;
 
 import java.util.UUID;
 
@@ -15,13 +15,12 @@ public class AuthenticationService {
 
     private final UserService userService;
 
+    @Transactional
     public UUID loginUser(LoginUserDto user) {
 
         int userId = getUserIdFromUserDto(user);
 
-        if (sessionService.userHasActiveSession(userId)) {
-            throw new UserAlreadyLoggedInException("User is already logged in."); //catch
-        }
+        sessionService.deleteSessionByUserId(userId);
 
         sessionService.createSession(userId);
 

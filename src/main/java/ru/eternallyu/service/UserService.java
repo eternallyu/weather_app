@@ -2,10 +2,13 @@ package ru.eternallyu.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.eternallyu.dto.LoginUserDto;
 import ru.eternallyu.dto.RegistrationUserDto;
 import ru.eternallyu.mapper.UserMapper;
 import ru.eternallyu.model.entity.User;
 import ru.eternallyu.repository.UserRepository;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +39,9 @@ public class UserService {
 
     public boolean existsByLogin(String login) {
         return userRepository.existsByLogin(login);
+    }
+
+    public boolean correctPassword(LoginUserDto user) {
+        return Objects.equals(user.getPassword(), userRepository.findByLogin(user.getLogin()).get().getPassword());
     }
 }

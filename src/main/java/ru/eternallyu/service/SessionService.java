@@ -43,4 +43,8 @@ public class SessionService {
     public Session getSessionByUserId(int userId) {
         return sessionRepository.findByUserId(userId).orElse(null);
     }
+
+    public void deleteSessionByUserId(int userId) {
+        sessionRepository.deleteByUserId(userId);
+    }
 }
