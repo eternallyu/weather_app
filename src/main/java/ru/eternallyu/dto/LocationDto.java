@@ -1,9 +1,18 @@
 package ru.eternallyu.dto;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Setter
+@Getter
 @Builder
-public record LocationDto(String name, Integer userId, BigDecimal latitude, BigDecimal longitude) {
+public class LocationDto {
+    private String name;
+    private Integer userId;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 }
