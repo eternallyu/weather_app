@@ -18,14 +18,14 @@ public class SignUpController {
     private final UserService userService;
 
     @GetMapping("/registration")
-    public String signUp(Model model) {
+    public String signUpGet(Model model) {
         model.addAttribute("user", new RegistrationUserDto());
         return "sign-up";
     }
 
     @PostMapping("/registration")
-    public String signUp(@ModelAttribute("user") @Valid RegistrationUserDto registrationUserDto,
-                         BindingResult bindingResult) {
+    public String signUpPost(@ModelAttribute("user") @Valid RegistrationUserDto registrationUserDto,
+                            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "sign-up";

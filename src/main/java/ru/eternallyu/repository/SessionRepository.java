@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface SessionRepository extends JpaRepository<Session, UUID> {
     @NonNull
     Optional<Session> findById(@NonNull UUID id);
+
+    Optional<Session> findByUserId(Integer sessionId);
 }

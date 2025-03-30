@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "sessions")
@@ -16,8 +17,7 @@ public class Session {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "userid")
@@ -26,7 +26,8 @@ public class Session {
     @Column(name = "expiresat")
     private LocalDateTime expiresAt;
 
-    public Session(User user, LocalDateTime expiresAt) {
+    public Session(UUID id, User user, LocalDateTime expiresAt) {
+        this.id = id;
         this.user = user;
         this.expiresAt = expiresAt;
     }

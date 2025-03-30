@@ -39,7 +39,7 @@ public class HomePageController {
 
         Session session = sessionService.getSession(UUID.fromString(sessionFromCookie));
         
-        if (sessionService.isInvalidSession(session)) {
+        if (sessionUtil.isInvalidSession(session)) {
             addEmptyAttributes(model);
             return "index";
         }

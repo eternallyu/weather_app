@@ -26,8 +26,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User getUser(String login) {
+    public User getUserByLogin(String login) {
         return userRepository.findByLogin(login).orElse(null);
+    }
+
+    public User getUserById(Integer id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     public boolean existsByLogin(String login) {
