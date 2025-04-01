@@ -1,8 +1,8 @@
 package ru.eternallyu.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.eternallyu.dto.LocationDto;
 import ru.eternallyu.model.entity.Location;
-import org.springframework.stereotype.Component;
 
 @Component
 public class LocationMapper {

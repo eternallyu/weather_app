@@ -28,6 +28,8 @@ public class LoginController {
 
     private final AuthenticationService authenticationService;
 
+    private final SessionService sessionService;
+
     @GetMapping("/login")
     public String loginGet(Model model) {
         model.addAttribute("user", new LoginUserDto());
@@ -57,6 +59,8 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(@CookieValue("session") String session, HttpServletResponse response) {
+
+        sessionService.deleteSessionByCookieValue(session);
 
         Cookie cookie = cookieUtil.emptyCookie(session);
 

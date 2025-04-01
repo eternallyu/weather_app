@@ -1,8 +1,8 @@
 package ru.eternallyu.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.eternallyu.model.entity.Location;
 import org.springframework.stereotype.Repository;
+import ru.eternallyu.model.entity.Location;
 
 import java.util.List;
 

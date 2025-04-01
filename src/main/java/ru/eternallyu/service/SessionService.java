@@ -1,15 +1,13 @@
 package ru.eternallyu.service;
 
-import jakarta.persistence.metamodel.IdentifiableType;
 import lombok.RequiredArgsConstructor;
-import ru.eternallyu.model.entity.Session;
 import org.springframework.stereotype.Service;
+import ru.eternallyu.model.entity.Session;
 import ru.eternallyu.model.entity.User;
 import ru.eternallyu.repository.SessionRepository;
 import ru.eternallyu.util.SessionUtil;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,16 +33,15 @@ public class SessionService {
         sessionRepository.save(session);
     }
 
-    public boolean userHasActiveSession(Integer userId) {
-        Session session = getSessionByUserId(userId);
-        return !sessionUtil.isInvalidSession(session);
-    }
-
     public Session getSessionByUserId(int userId) {
         return sessionRepository.findByUserId(userId).orElse(null);
     }
 
     public void deleteSessionByUserId(int userId) {
         sessionRepository.deleteByUserId(userId);
+    }
+
+    public void deleteSessionByCookieValue(String session) {
+        sessionRepository.deleteById(UUID.fromString(session));
     }
 }
