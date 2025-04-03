@@ -1,7 +1,7 @@
 package ru.eternallyu.service;
 
 import org.springframework.transaction.annotation.Transactional;
-import ru.eternallyu.client.OpenWeatherApiService;
+import ru.eternallyu.util.OpenWeatherApiClient;
 import ru.eternallyu.dto.LocationDto;
 import lombok.RequiredArgsConstructor;
 import ru.eternallyu.dto.SearchLocationDto;
@@ -20,7 +20,7 @@ public class LocationService {
 
     private final UserService userService;
 
-    private final OpenWeatherApiService openWeatherApiService;
+    private final OpenWeatherApiClient openWeatherApiClient;
 
     private final LocationMapper locationMapper;
 
@@ -31,6 +31,6 @@ public class LocationService {
     }
 
     public List<SearchLocationDto> getLocationsByName(String name) {
-        return openWeatherApiService.findLocationsByName(name);
+        return openWeatherApiClient.getLocationsByName(name);
     }
 }

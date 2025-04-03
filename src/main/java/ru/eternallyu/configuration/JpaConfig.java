@@ -27,8 +27,12 @@ import java.util.Properties;
 @ComponentScan(basePackages = "ru.eternallyu")
 public class JpaConfig {
 
+    private final Environment environment;
+
     @Autowired
-    private Environment environment;
+    public JpaConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     public DataSource dataSource() {
