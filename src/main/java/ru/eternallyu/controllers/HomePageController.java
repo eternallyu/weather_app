@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.eternallyu.dto.LocationDto;
 import ru.eternallyu.dto.RegistrationUserDto;
+import ru.eternallyu.dto.weather.WeatherDto;
 import ru.eternallyu.model.entity.Session;
 import ru.eternallyu.service.LocationService;
 import ru.eternallyu.service.SessionService;
@@ -52,12 +53,16 @@ public class HomePageController {
     private void addNonEmptyAttributes(Model model, Session session) {
         RegistrationUserDto registrationUserDto = userService.getUserDto(session.getUser().getLogin());
         List<LocationDto> locationDtoList = locationService.getAllUserLocations(registrationUserDto.getLogin());
+        List<WeatherDto> weatherDtoList = locationService.getWeatherForUserLocations(locationDtoList);
+
         model.addAttribute("user", registrationUserDto);
         model.addAttribute("locationDtoList", locationDtoList);
+        model.addAttribute("weatherDtoList", weatherDtoList);
     }
 
     private static void addEmptyAttributes(Model model) {
         model.addAttribute("user", null);
         model.addAttribute("locationDtoList", new ArrayList<>());
+        model.addAttribute("weatherDtoList", new ArrayList<>());
     }
 }

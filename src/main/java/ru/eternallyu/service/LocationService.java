@@ -1,13 +1,15 @@
 package ru.eternallyu.service;
 
-import org.springframework.transaction.annotation.Transactional;
-import ru.eternallyu.util.OpenWeatherApiClient;
-import ru.eternallyu.dto.LocationDto;
 import lombok.RequiredArgsConstructor;
-import ru.eternallyu.dto.SearchLocationDto;
-import ru.eternallyu.mapper.LocationMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.eternallyu.dto.LocationDto;
+import ru.eternallyu.dto.SearchLocationDto;
+import ru.eternallyu.dto.weather.WeatherDto;
+import ru.eternallyu.mapper.LocationMapper;
+import ru.eternallyu.model.entity.Location;
 import ru.eternallyu.repository.LocationRepository;
+import ru.eternallyu.util.OpenWeatherApiClient;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,5 +34,20 @@ public class LocationService {
 
     public List<SearchLocationDto> getLocationsByName(String name) {
         return openWeatherApiClient.getLocationsByName(name);
+    }
+
+    public void createLocation(LocationDto locationDto) {
+        Location location = locationMapper.mapDtoToLocation(locationDto);
+
+        locationRepository.save(location);
+    }
+
+    public List<WeatherDto> getWeatherForUserLocations(List<LocationDto> locationDtoList) {
+        return locationDtoList.stream()
+                .map(locationDto -> openWeatherApiClient.getWeatherByCoordinates(
+                        locationDto.getLatitude(),
+                        locationDto.getLongitude()
+                ))
+                .toList();
     }
 }
