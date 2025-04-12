@@ -31,6 +31,9 @@ public class SearchLocationController {
 
     @GetMapping("/search")
     public String searchLocation(@RequestParam("name") String name, Model model) {
+
+        System.out.println("Search request for: " + name);
+        
         LocationNameValidator.validateLocationName(name);
 
         List<SearchLocationDto> locations = locationService.getLocationsByName(name);
