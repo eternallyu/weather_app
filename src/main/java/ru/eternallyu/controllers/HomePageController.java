@@ -56,13 +56,11 @@ public class HomePageController {
         List<WeatherDto> weatherDtoList = locationService.getWeatherForUserLocations(locationDtoList);
 
         model.addAttribute("user", registrationUserDto);
-        model.addAttribute("locationDtoList", locationDtoList);
         model.addAttribute("weatherDtoList", weatherDtoList);
     }
 
     private static void addEmptyAttributes(Model model) {
         model.addAttribute("user", null);
-        model.addAttribute("locationDtoList", new ArrayList<>());
         model.addAttribute("weatherDtoList", new ArrayList<>());
     }
 }

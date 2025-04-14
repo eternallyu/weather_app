@@ -42,10 +42,9 @@ public class SearchLocationController {
 
     @PostMapping("/add")
     public String addLocation(@RequestParam("latitude") BigDecimal latitude,
-                              @RequestParam("longitude") BigDecimal lon,
+                              @RequestParam("longitude") BigDecimal longitude,
                               @RequestParam("name") String name,
-                              @CookieValue(value = "session", defaultValue = "") String sessionFromCookie,
-                              Model model) {
+                              @CookieValue(value = "session", defaultValue = "") String sessionFromCookie) {
 
         if (sessionFromCookie.isEmpty()) {
             throw new UserAuthorizationException("User is not logged in");
@@ -59,7 +58,7 @@ public class SearchLocationController {
 
         int userId = session.getUser().getId();
 
-        LocationDto locationDto = buildLocationDto(latitude, lon, name, userId);
+        LocationDto locationDto = buildLocationDto(latitude, longitude, name, userId);
 
         locationService.createLocation(locationDto);
 

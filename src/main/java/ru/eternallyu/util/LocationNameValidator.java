@@ -6,7 +6,8 @@ import ru.eternallyu.exception.InvalidLocationException;
 @Component
 public class LocationNameValidator {
     public static void validateLocationName(String name) {
-        if (emptyName(name) || notValidLength(name) || !name.matches("[a-zA-Z]+")) {
+        if (emptyName(name) || notValidLength(name) || !name.matches("[a-zA-Za-яА-Я]+")
+        ) {
             throw new InvalidLocationException("Location name contains invalid characters.");
         }
     }
