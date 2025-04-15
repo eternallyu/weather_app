@@ -2,6 +2,7 @@ package ru.eternallyu.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.eternallyu.exception.UserAuthorizationException;
 import ru.eternallyu.model.entity.Session;
 import ru.eternallyu.model.entity.User;
 import ru.eternallyu.repository.SessionRepository;
@@ -43,5 +44,19 @@ public class SessionService {
 
     public void deleteSessionByCookieValue(String session) {
         sessionRepository.deleteById(UUID.fromString(session));
+    }
+
+    public Session checkUserSessionStatus(String sessionFromCookie) {
+        if (sessionFromCookie.isEmpty()) {
+            throw new UserAuthorizationException("User is not logged in");
+        }
+
+        Session session = getSession(UUID.fromString(sessionFromCookie));
+
+        if (sessionUtil.isInvalidSession(session)) {
+            throw new UserAuthorizationException("User is not logged in");
+        }
+
+        return session;
     }
 }

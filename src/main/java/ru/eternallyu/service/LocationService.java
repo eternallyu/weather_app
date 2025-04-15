@@ -32,6 +32,12 @@ public class LocationService {
         return locationRepository.findByUserId(userId).stream().map(locationMapper::mapLocationToDto).collect(Collectors.toList());
     }
 
+    @Transactional
+    public void deleteLocation(String locationName, String userLogin) {
+        int userId = userService.getUserByLogin(userLogin).getId();
+        locationRepository.deleteByUserIdAndName(userId, locationName);
+    }
+
     public List<SearchLocationDto> getLocationsByName(String name) {
         return openWeatherApiClient.getLocationsByName(name);
     }
@@ -49,5 +55,9 @@ public class LocationService {
                         locationDto.getLongitude()
                 ))
                 .toList();
+    }
+
+    public boolean userHasLocation(int userId, String name) {
+        return locationRepository.findByUserIdAndName(userId, name).isPresent();
     }
 }

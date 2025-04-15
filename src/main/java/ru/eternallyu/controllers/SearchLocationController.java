@@ -6,18 +6,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.eternallyu.dto.LocationDto;
 import ru.eternallyu.dto.SearchLocationDto;
+import ru.eternallyu.dto.UserDto;
 import ru.eternallyu.exception.InvalidLocationException;
 import ru.eternallyu.exception.UserAuthorizationException;
 import ru.eternallyu.exception.WeatherApiException;
 import ru.eternallyu.model.entity.Session;
 import ru.eternallyu.service.LocationService;
 import ru.eternallyu.service.SessionService;
+import ru.eternallyu.service.UserService;
 import ru.eternallyu.util.LocationNameValidator;
 import ru.eternallyu.util.SessionUtil;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,19 +26,19 @@ public class SearchLocationController {
 
     private final LocationService locationService;
 
+    private final UserService userService;
+
     private final SessionService sessionService;
 
-    private final SessionUtil sessionUtil;
-
     @GetMapping("/search")
-    public String searchLocation(@RequestParam("name") String name, Model model) {
+    public String searchLocation(@CookieValue(value = "session", defaultValue = "") String sessionFromCookie, @RequestParam("name") String name, Model model) {
 
-        System.out.println("Search request for: " + name);
-        
+        Session session = sessionService.checkUserSessionStatus(sessionFromCookie);
+        UserDto userDto = userService.getUserDto(session.getUser().getLogin());
         LocationNameValidator.validateLocationName(name);
-
         List<SearchLocationDto> locations = locationService.getLocationsByName(name);
 
+        model.addAttribute("user", userDto);
         model.addAttribute("locations", locations);
 
         return "search-results";
@@ -49,17 +50,13 @@ public class SearchLocationController {
                               @RequestParam("name") String name,
                               @CookieValue(value = "session", defaultValue = "") String sessionFromCookie) {
 
-        if (sessionFromCookie.isEmpty()) {
-            throw new UserAuthorizationException("User is not logged in");
-        }
-
-        Session session = sessionService.getSession(UUID.fromString(sessionFromCookie));
-
-        if (sessionUtil.isInvalidSession(session)) {
-            throw new UserAuthorizationException("User is not logged in");
-        }
+        Session session = sessionService.checkUserSessionStatus(sessionFromCookie);
 
         int userId = session.getUser().getId();
+
+        if (locationService.userHasLocation(userId, name)) {
+            throw new InvalidLocationException("User already has this location");
+        }
 
         LocationDto locationDto = buildLocationDto(latitude, longitude, name, userId);
 

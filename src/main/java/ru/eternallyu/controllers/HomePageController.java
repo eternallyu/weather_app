@@ -5,8 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.eternallyu.dto.LocationDto;
 import ru.eternallyu.dto.RegistrationUserDto;
+import ru.eternallyu.dto.UserDto;
 import ru.eternallyu.dto.weather.WeatherDto;
 import ru.eternallyu.model.entity.Session;
 import ru.eternallyu.service.LocationService;
@@ -50,12 +53,23 @@ public class HomePageController {
         return "index";
     }
 
+    @PostMapping("/delete")
+    public String deleteLocation(@CookieValue(value = "session", defaultValue = "") String sessionFromCookie,
+                                 @RequestParam("locationName") String locationName,
+                                 @RequestParam("userLogin") String userLogin,
+                                 Model model) {
+
+        locationService.deleteLocation(locationName, userLogin);
+
+        return "redirect:/home";
+    }
+
     private void addNonEmptyAttributes(Model model, Session session) {
-        RegistrationUserDto registrationUserDto = userService.getUserDto(session.getUser().getLogin());
-        List<LocationDto> locationDtoList = locationService.getAllUserLocations(registrationUserDto.getLogin());
+        UserDto userDto = userService.getUserDto(session.getUser().getLogin());
+        List<LocationDto> locationDtoList = locationService.getAllUserLocations(userDto.getLogin());
         List<WeatherDto> weatherDtoList = locationService.getWeatherForUserLocations(locationDtoList);
 
-        model.addAttribute("user", registrationUserDto);
+        model.addAttribute("user", userDto);
         model.addAttribute("weatherDtoList", weatherDtoList);
     }
 

@@ -70,7 +70,8 @@ public class OpenWeatherApiClient {
         String url = environment.getProperty("openweather.api.weather.url") +
                      "?lat=" + latitude +
                      "&lon=" + longitude +
-                     "&appid=" + environment.getProperty("openweather.api.key");
+                     "&appid=" + environment.getProperty("openweather.api.key") +
+                     "&units=metric";
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

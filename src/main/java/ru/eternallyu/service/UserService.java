@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.eternallyu.dto.LoginUserDto;
 import ru.eternallyu.dto.RegistrationUserDto;
+import ru.eternallyu.dto.UserDto;
 import ru.eternallyu.mapper.UserMapper;
 import ru.eternallyu.model.entity.User;
 import ru.eternallyu.repository.UserRepository;
@@ -18,7 +19,7 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    public RegistrationUserDto getUserDto(String login) {
+    public UserDto getUserDto(String login) {
         return userRepository.findByLogin(login).map(userMapper::mapUserToUserDto).orElse(null);
     }
 
