@@ -66,10 +66,10 @@
                     <div class="card h-100 position-relative weather-card">
 
                         <form th:action="@{/delete}" method="post" class="position-absolute weather-card-delete-form">
-                            <input type="hidden" name="locationName" th:value="${weather.getName()}" />
-                            <input type="hidden" name="userLogin" th:value="${user.getLogin()}" />
+                            <input type="hidden" name="locationId" th:value="${weather.id}" />
                             <button type="submit" class="btn-close" aria-label="Delete"></button>
                         </form>
+
 
                         <div class="card-body d-flex flex-column">
 
@@ -79,6 +79,10 @@
 
                             <p class="card-text mb-1"
                                th:text="'Feels like: ' + ${weather.temp.feelsLike} + ' °C'">
+                                Feels like
+                            </p>
+                            <p class="card-text mb-1"
+                               th:text="'Coordinates: longitude - ' + ${weather.coordinates.getLongitude()} + ', latitude - ' + ${weather.coordinates.latitude}">
                                 Feels like
                             </p>
 

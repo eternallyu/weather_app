@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.eternallyu.dto.LocationDto;
-import ru.eternallyu.dto.RegistrationUserDto;
 import ru.eternallyu.dto.UserDto;
 import ru.eternallyu.dto.weather.WeatherDto;
 import ru.eternallyu.model.entity.Session;
@@ -49,26 +47,28 @@ public class HomePageController {
         }
 
         addNonEmptyAttributes(model, session);
-
         return "index";
     }
 
+
     @PostMapping("/delete")
     public String deleteLocation(@CookieValue(value = "session", defaultValue = "") String sessionFromCookie,
-                                 @RequestParam("locationName") String locationName,
-                                 @RequestParam("userLogin") String userLogin,
-                                 Model model) {
-
-        locationService.deleteLocation(locationName, userLogin);
-
+                                 @RequestParam("locationId") Long locationId) {
+        Session session = sessionService.getSession(UUID.fromString(sessionFromCookie));
+        if (sessionUtil.isInvalidSession(session)) {
+            return "redirect:/login";
+        }
+        Integer userId = session.getUser().getId();
+        locationService.deleteLocationById(locationId, userId);
         return "redirect:/home";
     }
 
+
+
     private void addNonEmptyAttributes(Model model, Session session) {
         UserDto userDto = userService.getUserDto(session.getUser().getLogin());
-        List<LocationDto> locationDtoList = locationService.getAllUserLocations(userDto.getLogin());
-        List<WeatherDto> weatherDtoList = locationService.getWeatherForUserLocations(locationDtoList);
-
+        int userId = userService.getUserByLogin(userDto.getLogin()).getId();
+        List<WeatherDto> weatherDtoList = locationService.getWeatherForUserLocationsByUserId(userId);
         model.addAttribute("user", userDto);
         model.addAttribute("weatherDtoList", weatherDtoList);
     }

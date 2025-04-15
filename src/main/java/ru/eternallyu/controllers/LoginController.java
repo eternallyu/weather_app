@@ -63,7 +63,6 @@ public class LoginController {
         sessionService.deleteSessionByCookieValue(session);
 
         Cookie cookie = cookieUtil.emptyCookie(session);
-
         response.addCookie(cookie);
 
         return "redirect:/home";

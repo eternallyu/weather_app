@@ -14,6 +14,11 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherDto {
 
+    private Long id;
+
+    @JsonProperty("coord")
+    private Coordinates coordinates;
+
     @JsonProperty("weather")
     private List<WeatherCondition> weather;
 

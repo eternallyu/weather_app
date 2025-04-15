@@ -6,13 +6,15 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.eternallyu.dto.LocationDto;
 import ru.eternallyu.dto.SearchLocationDto;
 import ru.eternallyu.dto.weather.WeatherDto;
+import ru.eternallyu.exception.InvalidLocationException;
 import ru.eternallyu.mapper.LocationMapper;
 import ru.eternallyu.model.entity.Location;
 import ru.eternallyu.repository.LocationRepository;
 import ru.eternallyu.util.OpenWeatherApiClient;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,22 +22,15 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
 
-    private final UserService userService;
-
     private final OpenWeatherApiClient openWeatherApiClient;
 
     private final LocationMapper locationMapper;
 
     @Transactional
-    public List<LocationDto> getAllUserLocations(String login) {
-        int userId = userService.getUserByLogin(login).getId();
-        return locationRepository.findByUserId(userId).stream().map(locationMapper::mapLocationToDto).collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void deleteLocation(String locationName, String userLogin) {
-        int userId = userService.getUserByLogin(userLogin).getId();
-        locationRepository.deleteByUserIdAndName(userId, locationName);
+    public void deleteLocationById(Long locationId, Integer userId) {
+        Location location = locationRepository.findByIdAndUserId(locationId, userId)
+                .orElseThrow(() -> new InvalidLocationException("Location not found or doesn't belong to user"));
+        locationRepository.delete(location);
     }
 
     public List<SearchLocationDto> getLocationsByName(String name) {
@@ -48,16 +43,26 @@ public class LocationService {
         locationRepository.save(location);
     }
 
-    public List<WeatherDto> getWeatherForUserLocations(List<LocationDto> locationDtoList) {
-        return locationDtoList.stream()
-                .map(locationDto -> openWeatherApiClient.getWeatherByCoordinates(
-                        locationDto.getLatitude(),
-                        locationDto.getLongitude()
-                ))
-                .toList();
+    @Transactional
+    public List<WeatherDto> getWeatherForUserLocationsByUserId(int userId) {
+        List<Location> locations = locationRepository.findByUserId(userId);
+        List<WeatherDto> weatherDtoList = new ArrayList<>();
+
+        for (Location location : locations) {
+            WeatherDto weatherDto = openWeatherApiClient.getWeatherByCoordinates(
+                    location.getLatitude(),
+                    location.getLongitude()
+            );
+
+            weatherDto.setName(location.getName());
+            weatherDto.setId(location.getId());
+            weatherDtoList.add(weatherDto);
+        }
+
+        return weatherDtoList;
     }
 
-    public boolean userHasLocation(int userId, String name) {
-        return locationRepository.findByUserIdAndName(userId, name).isPresent();
+    public boolean userHasLocation(int userId, String name, BigDecimal latitude, BigDecimal longitude) {
+        return locationRepository.findByUserIdAndNameAndLatitudeAndLongitude(userId, name, latitude, longitude).isPresent();
     }
 }

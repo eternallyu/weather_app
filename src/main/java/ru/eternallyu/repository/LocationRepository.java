@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.eternallyu.model.entity.Location;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 public interface LocationRepository extends JpaRepository<Location, Integer> {
     List<Location> findByUserId(Integer userId);
 
-    Optional<Location> findByUserIdAndName(Integer userId, String name);
+    Optional<Location> findByIdAndUserId(Long id, Integer userId);
 
-    void deleteByUserIdAndName(Integer userId, String name);
+    Optional<Location> findByUserIdAndNameAndLatitudeAndLongitude(Integer userId, String name, BigDecimal latitude, BigDecimal longitude);
 }

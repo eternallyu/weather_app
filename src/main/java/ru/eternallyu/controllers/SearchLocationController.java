@@ -54,7 +54,7 @@ public class SearchLocationController {
 
         int userId = session.getUser().getId();
 
-        if (locationService.userHasLocation(userId, name)) {
+        if (locationService.userHasLocation(userId, name, latitude, longitude)) {
             throw new InvalidLocationException("User already has this location");
         }
 
